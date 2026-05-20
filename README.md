@@ -92,7 +92,7 @@ Sold to companies ($10-15/ton)
 | **Satellite Data** | NASA POWER API | Daily rainfall (1km grid) |
 | **Payouts** | M-Pesa Daraja API | STK push to farmers |
 | **Dashboard** | Streamlit | Live map + analytics |
-| **Carbon Verification** | Verra VM0042 | Soil carbon methodology |
+| **Carbon Verification** | Satellite + AI | Soil carbon estimation (industry standards ready) |hodology |
 | **Database** | SQLite / PostgreSQL | Farmer records |
 
 ---

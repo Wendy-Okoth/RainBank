@@ -84,6 +84,7 @@ python manage.py createsuperuser
 
 # Start server
 python manage.py runserver
+```
 
 ### Expose with ngrok (for USSD testing)
 

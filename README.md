@@ -40,20 +40,22 @@ Regenerative Farming ───► Carbon Credits ───► Insurance Premium 
 ## 🛠️ Tech Stack
 
 | Layer | Technology | Purpose |
-|-------|-----------|---------|
-| **Frontend** | React + Mapbox | Admin dashboard & drought visualization |
-| **Backend** | Python Flask | USSD handler, trigger logic, API |
-| **Data** | NASA POWER API | Historical + real-time precipitation (1km) |
-| **Payments** | M-Pesa Daraja API | STK Push payouts |
-| **Mobile** | Africa's Talking | USSD gateway (*384#) |
-| **ML** | Scikit-learn | Carbon sequestration estimation |
+|-------|------------|---------|
+| **Backend** | Django 6.0 | API, USSD, business logic |
+| **SMS/USSD** | Africa's Talking | USSD gateway (`*384#`) |
+| **Satellite Data** | NASA POWER API | Daily rainfall (1km grid) |
+| **Payouts** | M-Pesa Daraja API | STK push to farmers |
+| **Dashboard** | Streamlit | Live map + analytics |
+| **Carbon Verification** | Verra VM0042 | Soil carbon methodology |
+| **Database** | SQLite / PostgreSQL | Farmer records |
+
 
 ---
 
-## 🚀 Quick Start (Demo in 5 Minutes)
+## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.9+
 - Africa's Talking sandbox account (free)
 - M-Pesa Daraja sandbox credentials (free)
 
@@ -61,23 +63,36 @@ Regenerative Farming ───► Carbon Credits ───► Insurance Premium 
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourteam/rainbank.git
-cd rainbank
+git clone https://github.com/Wendy-Okoth/RainBank.git
+cd RainBank
 
-# Setup backend
-cd backend
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 
-# Setup frontend
-cd ../frontend
-npm install
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your API keys
 
-# Run both (split terminal)
-cd backend && python app.py
-cd frontend && npm start
+# Run migrations
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
 
+# Start server
+python manage.py runserver
 
+### Expose with ngrok (for USSD testing)
 
+```bash
+ngrok http 8000
+```
 
+Then set Africa's Talking USSD callback to:
+
+`https://your-ngrok-url/notifications/ussd/`
+
+> **Note:** Your ngrok URL changes each time you restart. Update the callback URL in Africa's Talking dashboard.

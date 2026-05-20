@@ -235,7 +235,7 @@ MIT License - free for non-commercial and humanitarian use.
 - **Africa's Talking** - USSD/SMS infrastructure
 - **NASA POWER** - Free satellite rainfall data
 - **Safaricom** - M-Pesa Daraja API
-- **Verra** - Carbon credit methodology (VM0042)
+- **African farmers** – The reason we built this
 
 ---
 

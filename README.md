@@ -183,7 +183,7 @@ No claim needed.
 
 ---
 
-## 🌱 SDGs Addressed
+##  SDGs Addressed
 
 ✅ **SDG 1** - No Poverty
 
@@ -199,12 +199,10 @@ No claim needed.
 
 | Role | Name | Responsibility |
 |------|------|-----------------|
-| Project Lead | Gavin | Vision, pitch, demo, product strategy |
-| Backend Developer | Wendy-Okoth | Django, USSD, NASA API, M-Pesa |
 
----
 
-## 🏆 Hackathon Submission
+
+##  Hackathon Submission
 
 **Event:** Climate Hackathon 2026
 

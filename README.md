@@ -226,7 +226,6 @@ MIT License - free for non-commercial and humanitarian use.
 
 **Pitch Deck:** [Insert link here]
 
-**Demo Video:** [Insert link here]
 
 ---
 
@@ -237,6 +236,3 @@ MIT License - free for non-commercial and humanitarian use.
 - **Safaricom** - M-Pesa Daraja API
 - **African farmers** – The reason we built this
 
----
-
-**Made with ❤️ for climate resilience and farmer prosperity.**

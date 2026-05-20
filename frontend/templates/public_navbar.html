@@ -1,0 +1,57 @@
+<!-- templates/public_navbar.html -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
+            <a href="{% url 'core:landing' %}" class="flex items-center space-x-2 hover:opacity-90 transition">
+                <div class="gradient-primary w-10 h-10 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-cloud-rain text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-earth">RainBank</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="{% url 'core:landing' %}" class="text-gray-700 hover:text-earth transition font-medium">Home</a>
+                <a href="#how-it-works" class="text-gray-700 hover:text-earth transition font-medium">How It Works</a>
+                <a href="#impact" class="text-gray-700 hover:text-earth transition font-medium">Impact</a>
+                <a href="#for-farmers" class="text-gray-700 hover:text-earth transition font-medium">For Farmers</a>
+                
+                {% if user.is_authenticated %}
+                <a href="{% url 'core:dashboard_overview' %}" class="text-earth hover:text-earth-dark transition font-medium">
+                    <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                </a>
+                <a href="{% url 'core:logout' %}" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-full transition font-medium">
+                    Logout
+                </a>
+                {% else %}
+                <a href="{% url 'core:login' %}" class="text-earth hover:text-earth-dark transition font-medium">Login</a>
+                <a href="{% url 'core:register' %}" class="bg-earth hover:bg-earth-dark text-white px-5 py-2 rounded-full transition font-medium shadow-md hover:shadow-lg">
+                    Register Free <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+                {% endif %}
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-2xl text-gray-700 hover:text-earth transition" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t space-y-3">
+            <a href="{% url 'core:landing' %}" class="block py-2 text-gray-700 hover:text-earth transition font-medium">Home</a>
+            <a href="#how-it-works" class="block py-2 text-gray-700 hover:text-earth transition font-medium">How It Works</a>
+            <a href="#impact" class="block py-2 text-gray-700 hover:text-earth transition font-medium">Impact</a>
+            <a href="#for-farmers" class="block py-2 text-gray-700 hover:text-earth transition font-medium">For Farmers</a>
+            
+            {% if user.is_authenticated %}
+            <a href="{% url 'core:dashboard_overview' %}" class="block py-2 text-earth font-semibold">Dashboard</a>
+            <a href="{% url 'core:logout' %}" class="block bg-red-500 text-white text-center py-2 rounded-full">Logout</a>
+            {% else %}
+            <a href="{% url 'core:login' %}" class="block py-2 text-earth font-semibold">Login</a>
+            <a href="{% url 'core:register' %}" class="block bg-earth text-white text-center py-2 rounded-full">Register Free</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

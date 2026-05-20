@@ -1,0 +1,70 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login - RainBank{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16 max-w-md">
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="gradient-primary w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-cloud-rain text-white text-4xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold">Welcome Back</h1>
+            <p class="text-gray-600">Login to your farmer dashboard</p>
+        </div>
+        
+        <!-- Login Form -->
+        <form method="POST" action="{% url 'core:login' %}">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Phone Number</label>
+                <input type="tel" name="phone" placeholder="0712345678" required 
+                       class="w-full px-4 py-3 border rounded-lg focus:ring-earth focus:border-earth">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">4-Digit PIN</label>
+                <input type="password" name="pin" maxlength="4" pattern="[0-9]{4}" required 
+                       class="w-full px-4 py-3 border rounded-lg focus:ring-earth focus:border-earth">
+            </div>
+            
+            <div class="flex justify-between items-center mb-6">
+                <label class="flex items-center">
+                    <input type="checkbox" class="mr-2">
+                    <span class="text-sm text-gray-600">Remember me</span>
+                </label>
+                <a href="{% url 'core:forgot_pin' %}" class="text-sm text-earth hover:underline">Forgot PIN?</a>
+            </div>
+            
+            <button type="submit" class="w-full bg-earth hover:bg-earth-dark text-white font-bold py-3 rounded-lg transition">
+                Login <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </form>
+        
+        <!-- Divider -->
+        <div class="relative my-8">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-4 bg-white text-gray-500">OR</span>
+            </div>
+        </div>
+        
+        <!-- USSD Option -->
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+            <i class="fas fa-phone-alt text-earth text-2xl mb-2"></i>
+            <p class="font-medium">No internet? Register via USSD</p>
+            <p class="text-gray-600 text-sm">Dial <span class="font-mono font-bold text-earth">*384#</span> on any phone</p>
+        </div>
+        
+        <!-- Register Link -->
+        <p class="text-center text-sm text-gray-600 mt-6">
+            New to RainBank? <a href="{% url 'core:register' %}" class="text-earth font-semibold hover:underline">Create free account</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

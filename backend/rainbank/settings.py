@@ -6,7 +6,10 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent  # This is 'backend' folder
+
+# Add FRONTEND_DIR to point to your frontend folder
+FRONTEND_DIR = BASE_DIR.parent / 'frontend'  # Goes up to RainBank, then to frontend
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-@zsk@1gs3wt-=_v)e$#!e9%gp&)3x0)+!i6o17h-!wqycai*ev'
@@ -53,7 +56,10 @@ ROOT_URLCONF = 'rainbank.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Add templates directory
+        'DIRS': [
+            FRONTEND_DIR / 'templates',  # Primary: frontend/templates/
+            BASE_DIR / 'templates',      # Fallback: backend/templates/ (if exists)
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -99,7 +105,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    FRONTEND_DIR / 'static',  # frontend/static/ for CSS/JS
+    BASE_DIR / 'static',      # backend/static/ fallback
+]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files
@@ -111,6 +120,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True  # For development
+
+# Session settings (for farmer login)
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 86400  # 24 hours in seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # REST Framework settings
 REST_FRAMEWORK = {

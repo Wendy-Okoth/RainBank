@@ -1,0 +1,81 @@
+<!-- templates/alerts.html -->
+{% if messages %}
+<div class="fixed top-20 right-4 z-50 space-y-2 max-w-md">
+    {% for message in messages %}
+    <div class="alert bg-white rounded-lg shadow-xl p-4 min-w-[280px] border-l-4 animate-slide-in
+         {% if message.tags == 'success' %}border-green-500{% elif message.tags == 'error' %}border-red-500{% elif message.tags == 'warning' %}border-yellow-500{% else %}border-blue-500{% endif %}">
+        <div class="flex items-start space-x-3">
+            <!-- Icon -->
+            <div class="flex-shrink-0">
+                {% if message.tags == 'success' %}
+                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                {% elif message.tags == 'error' %}
+                <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
+                {% elif message.tags == 'warning' %}
+                <i class="fas fa-exclamation-triangle text-yellow-500 text-xl"></i>
+                {% else %}
+                <i class="fas fa-info-circle text-blue-500 text-xl"></i>
+                {% endif %}
+            </div>
+            
+            <!-- Message -->
+            <div class="flex-1 text-gray-700 text-sm">
+                {{ message }}
+            </div>
+            
+            <!-- Close Button -->
+            <button onclick="this.closest('.alert').remove()" class="text-gray-400 hover:text-gray-600 transition">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+    }
+    
+    .animate-slide-in {
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    .alert {
+        transition: all 0.3s ease;
+    }
+</style>
+
+<script>
+    // Auto-dismiss success and info messages after 5 seconds
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+            const isSuccess = alert.querySelector('.fa-check-circle');
+            const isInfo = alert.querySelector('.fa-info-circle');
+            
+            if (isSuccess || isInfo) {
+                alert.style.animation = 'fadeOut 0.5s ease-out forwards';
+                setTimeout(() => alert.remove(), 500);
+            }
+        });
+    }, 5000);
+</script>
+{% endif %}

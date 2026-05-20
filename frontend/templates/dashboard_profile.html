@@ -1,0 +1,204 @@
+<!-- templates/dashboard_profile.html -->
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Profile Settings - RainBank{% endblock %}
+
+{% block page_title %}Profile Settings{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <form method="POST" action="{% url 'core:dashboard_profile' %}">
+        {% csrf_token %}
+        
+        <!-- Personal Information -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 pb-2 border-b">Personal Information</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Full Name</label>
+                    <input type="text" name="name" value="{{ farmer.name }}" class="w-full px-3 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Phone Number</label>
+                    <input type="tel" value="{{ farmer.phone_number }}" readonly disabled class="w-full px-3 py-2 bg-gray-100 border rounded-lg">
+                    <p class="text-xs text-gray-500 mt-1">Contact support to change phone number</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Gender</label>
+                    <select name="gender" class="w-full px-3 py-2 border rounded-lg">
+                        <option value="F" {% if farmer.gender == 'F' %}selected{% endif %}>Female</option>
+                        <option value="M" {% if farmer.gender == 'M' %}selected{% endif %}>Male</option>
+                        <option value="O" {% if farmer.gender == 'O' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Preferred Language</label>
+                    <select class="w-full px-3 py-2 border rounded-lg">
+                        <option>English</option>
+                        <option>Kiswahili</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Location -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 pb-2 border-b">Location</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">County</label>
+                    <input type="text" name="county" value="{{ farmer.county|default:'' }}" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Village/Town</label>
+                    <input type="text" name="village" value="{{ farmer.village|default:'' }}" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Farm Details -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 pb-2 border-b">Farm Details</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Crop Type</label>
+                    <select name="crop_type" class="w-full px-3 py-2 border rounded-lg">
+                        <option value="maize">Maize</option>
+                        <option value="beans">Beans</option>
+                        <option value="mixed">Mixed</option>
+                        <option value="vegetables">Vegetables</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Farm Size (acres)</label>
+                    <input type="number" name="area_acres" value="{{ farm.area_acres|default:2.5 }}" step="0.5" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <label class="block text-sm font-medium mb-2">Regenerative Practices</label>
+                <div class="grid md:grid-cols-2 gap-2">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="practices" value="manure" {% if 'manure' in farm.regenerative_practices|default:'' %}checked{% endif %} class="mr-2">
+                        <span>✅ Manure / Compost</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="practices" value="mulching" {% if 'mulching' in farm.regenerative_practices|default:'' %}checked{% endif %} class="mr-2">
+                        <span>🌾 Mulching</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="practices" value="tillage" {% if 'tillage' in farm.regenerative_practices|default:'' %}checked{% endif %} class="mr-2">
+                        <span>🚜 Minimum Tillage</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="practices" value="cover" {% if 'cover' in farm.regenerative_practices|default:'' %}checked{% endif %} class="mr-2">
+                        <span>🌿 Cover Crops</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notification Preferences -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 pb-2 border-b">Notification Preferences</h3>
+            <div class="space-y-3">
+                <label class="flex items-center justify-between">
+                    <span>SMS Alerts</span>
+                    <input type="checkbox" checked class="toggle">
+                </label>
+                <label class="flex items-center justify-between">
+                    <span>Email Alerts</span>
+                    <input type="checkbox" class="toggle">
+                </label>
+                <label class="flex items-center justify-between">
+                    <span>Drought Warnings</span>
+                    <input type="checkbox" checked class="toggle">
+                </label>
+                <label class="flex items-center justify-between">
+                    <span>Payout Confirmations</span>
+                    <input type="checkbox" checked class="toggle">
+                </label>
+            </div>
+        </div>
+        
+        <!-- Payment Settings -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 pb-2 border-b">Payment Settings</h3>
+            <div>
+                <label class="block text-sm font-medium mb-1">M-Pesa Phone Number</label>
+                <input type="tel" name="mpesa_phone" value="{{ farmer.mpesa_phone|default:farmer.phone_number }}" class="w-full px-3 py-2 border rounded-lg">
+                <p class="text-xs text-gray-500 mt-1">All payouts will be sent to this number</p>
+            </div>
+        </div>
+        
+        <!-- Security -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 pb-2 border-b">Security</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Change PIN</label>
+                    <input type="password" placeholder="Current PIN" class="w-full px-3 py-2 border rounded-lg mb-2">
+                    <input type="password" placeholder="New PIN" class="w-full px-3 py-2 border rounded-lg mb-2">
+                    <input type="password" placeholder="Confirm New PIN" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-sm font-medium mb-2">Login History</p>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <p><i class="fas fa-circle text-green-500 text-xs mr-1"></i> Today, 10:30 AM - Nairobi</p>
+                        <p><i class="fas fa-circle text-gray-400 text-xs mr-1"></i> Yesterday, 8:15 PM - Nairobi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Save Button -->
+        <div class="flex gap-4">
+            <button type="submit" class="flex-1 bg-earth hover:bg-earth-dark text-white font-bold py-3 rounded-lg transition">
+                Save Changes
+            </button>
+            <a href="{% url 'core:dashboard_overview' %}" class="flex-1 border border-gray-300 text-gray-700 text-center py-3 rounded-lg hover:bg-gray-50 transition">
+                Cancel
+            </a>
+        </div>
+    </form>
+    
+    <!-- Danger Zone -->
+    <div class="bg-red-50 border border-red-200 rounded-xl p-6 mt-6">
+        <h4 class="font-bold text-red-800 mb-2">⚠️ Danger Zone</h4>
+        <p class="text-sm text-red-700 mb-4">Once you deactivate your account, you will no longer receive drought insurance payouts.</p>
+        <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+            Deactivate Account
+        </button>
+    </div>
+</div>
+
+<style>
+    .toggle {
+        appearance: none;
+        width: 44px;
+        height: 24px;
+        background-color: #ddd;
+        border-radius: 24px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .toggle:checked {
+        background-color: #2d6a4f;
+    }
+    .toggle::before {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border-radius: 50%;
+        top: 2px;
+        left: 3px;
+        transition: all 0.3s;
+    }
+    .toggle:checked::before {
+        left: 21px;
+    }
+</style>
+{% endblock %}

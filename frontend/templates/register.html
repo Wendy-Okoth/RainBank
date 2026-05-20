@@ -1,0 +1,172 @@
+<!-- templates/register.html -->
+{% extends 'base.html' %}
+
+{% block title %}Register - RainBank{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12 max-w-6xl">
+    <div class="grid md:grid-cols-2 gap-12">
+        <!-- Left Column - Info -->
+        <div class="hidden md:block">
+            <div class="sticky top-24">
+                <div class="gradient-primary rounded-2xl p-8 text-white">
+                    <i class="fas fa-cloud-rain text-5xl mb-4"></i>
+                    <h2 class="text-3xl font-bold mb-4">Join RainBank</h2>
+                    <p class="text-lg mb-6">Free insurance. Automatic payouts. No paperwork.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-check-circle mt-1"></i>
+                            <div>
+                                <div class="font-bold">Zero Premium</div>
+                                <div class="text-sm opacity-90">Carbon credits pay for everything</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-check-circle mt-1"></i>
+                            <div>
+                                <div class="font-bold">Instant Payouts</div>
+                                <div class="text-sm opacity-90">Money to M-Pesa when drought strikes</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-check-circle mt-1"></i>
+                            <div>
+                                <div class="font-bold">2-Minute Registration</div>
+                                <div class="text-sm opacity-90">No complicated forms</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-gray-100 rounded-2xl p-6 text-center">
+                    <i class="fas fa-phone-alt text-earth text-3xl mb-2"></i>
+                    <p class="font-bold">Prefer to register by phone?</p>
+                    <p class="text-gray-600">Dial <span class="font-mono font-bold">*384#</span> on any phone</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column - Form -->
+        <div>
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <h2 class="text-2xl font-bold mb-6">Create Your Account</h2>
+                
+                <form method="POST" action="{% url 'core:register' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Step 1: Personal Info -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-4 pb-2 border-b">Personal Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Full Name *</label>
+                                <input type="text" name="name" required class="w-full px-4 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Phone Number *</label>
+                                <input type="tel" name="phone" placeholder="0712345678" required class="w-full px-4 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                                <p class="text-xs text-gray-500 mt-1">Your M-Pesa registered number</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Gender *</label>
+                                <select name="gender" required class="w-full px-4 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                                    <option value="F">Female</option>
+                                    <option value="M">Male</option>
+                                    <option value="O">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Create 4-Digit PIN *</label>
+                                <input type="password" name="pin" maxlength="4" pattern="[0-9]{4}" required class="w-full px-4 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                                <p class="text-xs text-gray-500 mt-1">For web dashboard login</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Farm Location -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-4 pb-2 border-b">Farm Location</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">County *</label>
+                                <select name="county" required class="w-full px-4 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                                    <option value="">Select County</option>
+                                    <option>Machakos</option>
+                                    <option>Kitui</option>
+                                    <option>Makueni</option>
+                                    <option>Kiambu</option>
+                                    <option>Nairobi</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Village/Town *</label>
+                                <input type="text" name="village" required class="w-full px-4 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Farm Details -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-4 pb-2 border-b">Farm Details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Main Crop *</label>
+                                <select name="crop_type" required class="w-full px-4 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                                    <option value="maize">Maize</option>
+                                    <option value="beans">Beans</option>
+                                    <option value="mixed">Mixed Cereals</option>
+                                    <option value="vegetables">Vegetables</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Farm Size (acres) *</label>
+                                <input type="number" name="area_acres" step="0.5" required class="w-full px-4 py-2 border rounded-lg focus:ring-earth focus:border-earth">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Regenerative Practices *</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="practices" value="manure" class="mr-2">
+                                        <span>✅ Use manure / compost</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="practices" value="mulching" class="mr-2">
+                                        <span>🌾 Mulching (crop residues)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="practices" value="tillage" class="mr-2">
+                                        <span>🚜 Minimum tillage</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="practices" value="cover" class="mr-2">
+                                        <span>🌿 Cover crops</span>
+                                    </label>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">Select at least one practice</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Terms -->
+                    <div class="mb-6">
+                        <label class="flex items-start">
+                            <input type="checkbox" required class="mr-2 mt-1">
+                            <span class="text-sm">I confirm that my farm uses at least one regenerative practice, and I agree to satellite monitoring of my farm for rainfall and carbon data.</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-earth hover:bg-earth-dark text-white font-bold py-3 rounded-lg transition">
+                        Register for Free Insurance <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </form>
+                
+                <p class="text-center text-sm text-gray-600 mt-6">
+                    Already have an account? <a href="{% url 'core:login' %}" class="text-earth hover:underline">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

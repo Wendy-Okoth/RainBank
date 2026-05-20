@@ -1,0 +1,195 @@
+<!-- templates/dashboard_farm_map.html -->
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Farm Map - RainBank{% endblock %}
+
+{% block page_title %}Farm Map{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    .leaflet-container {
+        height: 500px;
+        width: 100%;
+        border-radius: 12px;
+        z-index: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Map and Sidebar -->
+<div class="grid lg:grid-cols-3 gap-6">
+    <!-- Map Container -->
+    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden">
+        <div id="farmMap"></div>
+    </div>
+    
+    <!-- Farm Details Sidebar -->
+    <div class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="font-semibold text-gray-800 mb-4">Farm Details</h3>
+            <div class="space-y-3">
+                <div>
+                    <p class="text-xs text-gray-500">Farm Name</p>
+                    <p class="font-medium">{{ farm.name|default:"My Farm" }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Location</p>
+                    <p class="font-medium">{{ farmer.county|default:"Machakos" }}, {{ farmer.village|default:"Kangundo" }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">GPS Coordinates</p>
+                    <p class="font-mono text-sm">{{ farm.latitude|default:"-1.5167" }}, {{ farm.longitude|default:"37.2667" }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Size</p>
+                    <p class="font-medium">{{ farm.area_acres|default:"2.5" }} acres</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Crop Type</p>
+                    <p class="font-medium">{{ farm.get_crop_type_display|default:"Maize" }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Soil Type</p>
+                    <p class="font-medium">{{ farm.soil_type|default:"Loam"|title }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Satellite Overlays -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="font-semibold text-gray-800 mb-3">Satellite Layers</h3>
+            <div class="space-y-2">
+                <button onclick="toggleLayer('rainfall')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center justify-between">
+                    <span><i class="fas fa-tint text-blue-500 mr-2"></i> Rainfall (Last 7 days)</span>
+                    <span id="rainfall-badge" class="text-xs bg-gray-200 px-2 py-1 rounded">OFF</span>
+                </button>
+                <button onclick="toggleLayer('vegetation')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center justify-between">
+                    <span><i class="fas fa-leaf text-green-500 mr-2"></i> Vegetation Health (NDVI)</span>
+                    <span id="vegetation-badge" class="text-xs bg-gray-200 px-2 py-1 rounded">OFF</span>
+                </button>
+                <button onclick="toggleLayer('soil')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center justify-between">
+                    <span><i class="fas fa-mountain text-brown-500 mr-2"></i> Soil Moisture</span>
+                    <span id="soil-badge" class="text-xs bg-gray-200 px-2 py-1 rounded">OFF</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Share Location -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="font-semibold text-gray-800 mb-3">Share Your Location</h3>
+            <button onclick="shareLocation()" class="w-full bg-earth text-white py-2 rounded-lg hover:bg-earth-dark transition">
+                <i class="fas fa-share-alt mr-2"></i> Share with Cooperative
+            </button>
+            <button onclick="downloadMap()" class="w-full mt-2 border border-earth text-earth py-2 rounded-lg hover:bg-earth/5 transition">
+                <i class="fas fa-download mr-2"></i> Download Map
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Nearby Farms Section -->
+<div class="bg-white rounded-xl shadow-sm p-6 mt-6">
+    <h3 class="font-semibold text-gray-800 mb-4">Nearby RainBank Farms</h3>
+    <div class="grid md:grid-cols-3 gap-4">
+        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+            <div class="w-10 h-10 bg-earth-light rounded-full flex items-center justify-center">
+                <i class="fas fa-user text-white"></i>
+            </div>
+            <div>
+                <p class="font-medium">Peter's Farm</p>
+                <p class="text-xs text-gray-500">2.3 km away</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+            <div class="w-10 h-10 bg-earth-light rounded-full flex items-center justify-center">
+                <i class="fas fa-user text-white"></i>
+            </div>
+            <div>
+                <p class="font-medium">Mary's Farm</p>
+                <p class="text-xs text-gray-500">3.1 km away</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+            <div class="w-10 h-10 bg-earth-light rounded-full flex items-center justify-center">
+                <i class="fas fa-user text-white"></i>
+            </div>
+            <div>
+                <p class="font-medium">James's Farm</p>
+                <p class="text-xs text-gray-500">4.5 km away</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    let map;
+    let rainfallLayer, vegetationLayer, soilLayer;
+    
+    // Initialize map
+    function initMap() {
+        const farmLat = {{ farm.latitude|default:-1.5167 }};
+        const farmLon = {{ farm.longitude|default:37.2667 }};
+        
+        map = L.map('farmMap').setView([farmLat, farmLon], 13);
+        
+        // Base tile layer
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; CartoDB',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Farm marker
+        const marker = L.marker([farmLat, farmLon]).addTo(map);
+        marker.bindPopup(`
+            <b>{{ farmer.name }}'s Farm</b><br>
+            {{ farm.area_acres }} acres of {{ farm.get_crop_type_display }}<br>
+            <i class="fas fa-shield-alt"></i> Protected by RainBank
+        `).openPopup();
+        
+        // Draw farm boundary (simple circle for demo)
+        L.circle([farmLat, farmLon], {
+            color: '#2d6a4f',
+            fillColor: '#2d6a4f',
+            fillOpacity: 0.1,
+            radius: 100  // meters
+        }).addTo(map);
+        
+        // Add scale bar
+        L.control.scale().addTo(map);
+    }
+    
+    // Layer toggles (simulated for demo)
+    function toggleLayer(layer) {
+        const badge = document.getElementById(`${layer}-badge`);
+        if (badge.textContent === 'OFF') {
+            badge.textContent = 'ON';
+            badge.classList.remove('bg-gray-200');
+            badge.classList.add('bg-earth', 'text-white');
+            // In production, add actual tile layer here
+            console.log(`${layer} layer enabled`);
+        } else {
+            badge.textContent = 'OFF';
+            badge.classList.remove('bg-earth', 'text-white');
+            badge.classList.add('bg-gray-200');
+            console.log(`${layer} layer disabled`);
+        }
+    }
+    
+    function shareLocation() {
+        alert('Location sharing link generated! Share with your cooperative.');
+    }
+    
+    function downloadMap() {
+        alert('Map download started. Check your downloads folder.');
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initMap);
+</script>
+{% endblock %}

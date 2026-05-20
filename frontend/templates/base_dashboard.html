@@ -1,0 +1,173 @@
+<!-- templates/base_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{% block title %}RainBank Dashboard{% endblock %}</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'earth': '#2d6a4f',
+                        'earth-light': '#40916c',
+                        'earth-dark': '#1b4332',
+                        'sun': '#f4a261',
+                        'sun-dark': '#e76f51',
+                        'sky': '#48cae4',
+                        'soil': '#7f4f24',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-primary {
+            background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: #f3f4f6;
+            padding-left: 1.5rem;
+        }
+        
+        .sidebar-item.active {
+            background: #2d6a4f20;
+            border-left: 4px solid #2d6a4f;
+            color: #2d6a4f;
+            font-weight: 600;
+        }
+    </style>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Leaflet Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Dashboard Layout - Sidebar + Main Content -->
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-xl overflow-y-auto flex flex-col">
+            <!-- Logo -->
+            <div class="gradient-primary p-6">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-cloud-rain text-white text-2xl"></i>
+                    <span class="text-white text-xl font-bold">RainBank</span>
+                </div>
+                <p class="text-white/80 text-xs mt-2">Pay-When-It-Doesn't-Rain</p>
+            </div>
+            
+            <!-- Farmer Info -->
+            <div class="p-4 border-b">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-earth-light rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-800">{{ farmer.name|default:"Farmer Name" }}</p>
+                        <p class="text-xs text-gray-500">{{ farmer.phone_number|default:"+254 XXX XXX" }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Links -->
+            <nav class="flex-1 p-4 space-y-1">
+                <a href="{% url 'dashboard_overview' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'overview' %}active{% endif %}">
+                    <i class="fas fa-tachometer-alt w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="{% url 'dashboard_drought_status' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'drought' %}active{% endif %}">
+                    <i class="fas fa-tint w-5"></i>
+                    <span>Drought Status</span>
+                    {% if drought_alert %}
+                    <span class="ml-auto w-2 h-2 bg-red-500 rounded-full"></span>
+                    {% endif %}
+                </a>
+                
+                <a href="{% url 'dashboard_carbon_credits' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'carbon' %}active{% endif %}">
+                    <i class="fas fa-leaf w-5"></i>
+                    <span>Carbon Credits</span>
+                </a>
+                
+                <a href="{% url 'dashboard_payout_history' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'payouts' %}active{% endif %}">
+                    <i class="fas fa-history w-5"></i>
+                    <span>Payout History</span>
+                </a>
+                
+                <a href="{% url 'dashboard_farm_map' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'map' %}active{% endif %}">
+                    <i class="fas fa-map-marker-alt w-5"></i>
+                    <span>Farm Map</span>
+                </a>
+                
+                <a href="{% url 'dashboard_profile' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'profile' %}active{% endif %}">
+                    <i class="fas fa-user-circle w-5"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+            
+            <!-- Logout Button -->
+            <div class="p-4 border-t">
+                <a href="{% url 'logout' %}" class="flex items-center space-x-3 text-red-600 hover:text-red-700 px-4 py-3 rounded-lg hover:bg-red-50 transition">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navbar -->
+            {% include 'dashboard_navbar.html' %}
+            
+            <!-- Page Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+    
+    <!-- Alert Messages -->
+    {% include 'alerts.html' %}
+    
+    <script>
+        // Toggle mobile sidebar
+        function toggleSidebar() {
+            const sidebar = document.querySelector('aside');
+            if (sidebar) {
+                sidebar.classList.toggle('-translate-x-full');
+            }
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

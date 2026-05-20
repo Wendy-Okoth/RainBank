@@ -97,3 +97,28 @@ Then set Africa's Talking USSD callback to:
 `https://your-ngrok-url/notifications/ussd/`
 
 > **Note:** Your ngrok URL changes each time you restart. Update the callback URL in Africa's Talking dashboard.
+
+---
+
+## 📬 Contact & Links
+
+**GitHub:** [github.com/Wendy-Okoth/RainBank](https://github.com/Wendy-Okoth/RainBank)
+
+**Live Demo:** [Insert URL here]
+
+**Pitch Deck:** [Insert link here]
+
+**Demo Video:** [Insert link here]
+
+---
+
+## 🙏 Acknowledgments
+
+- **Africa's Talking** - USSD/SMS infrastructure
+- **NASA POWER** - Free satellite rainfall data
+- **Safaricom** - M-Pesa Daraja API
+- **Verra** - Carbon credit methodology (VM0042)
+
+---
+
+**Made with ❤️ for climate resilience and farmer prosperity.**

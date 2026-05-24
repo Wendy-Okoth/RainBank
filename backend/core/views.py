@@ -400,14 +400,16 @@ def dashboard_farm_map(request):
     
     return render(request, 'dashboard_farm_map.html', context)
 
-
 def dashboard_profile(request):
-    """Farmer profile page"""
+    """Farmer profile page with language support"""
     farmer = get_farmer_from_session(request)
     if not farmer:
         return redirect('core:login')
     
     farm = farmer.farms.filter(is_active=True).first()
+    
+    # Get language preference
+    language = request.session.get('language', 'en')
     
     if request.method == 'POST':
         # Update farmer
@@ -425,17 +427,26 @@ def dashboard_profile(request):
             farm.regenerative_practices = request.POST.getlist('practices')
             farm.save()
         
-        messages.success(request, 'Profile updated successfully!')
+        # Translated success message
+        if language == 'sw':
+            messages.success(request, 'Taarifa zako zimehifadhiwa kikamilifu!')
+        else:
+            messages.success(request, 'Profile updated successfully!')
+        
         return redirect('core:dashboard_profile')
+    
+    # Update farmer's preferred language in database
+    farmer.preferred_language = 'sw' if language == 'sw' else 'en'
+    farmer.save(update_fields=['preferred_language'])
     
     context = {
         'farmer': farmer,
         'farm': farm,
         'active_tab': 'profile',
+        'current_language': language,
     }
     
     return render(request, 'dashboard_profile.html', context)
-
 
 # ========== ORIGINAL ADMIN / API ENDPOINTS ==========
 
@@ -628,3 +639,18 @@ def simulate_drought(request, farm_id):
         'amount_kes': str(payout.amount_kes),
         'message': 'Drought simulation triggered'
     })
+
+def switch_language(request):
+    """Switch user language preference"""
+    language = request.GET.get('lang', 'en')
+    
+    if language == 'sw':
+        request.session['language'] = 'sw'
+    else:
+        request.session['language'] = 'en'
+    
+    # Set cookie for 1 year
+    response = redirect(request.META.get('HTTP_REFERER', '/'))
+    response.set_cookie('language', request.session['language'], max_age=31536000)
+    
+    return response

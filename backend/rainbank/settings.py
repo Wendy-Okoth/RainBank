@@ -1,7 +1,7 @@
 """
 Django settings for rainbank project.
 """
-
+from decouple import config
 from pathlib import Path
 import os
 
@@ -12,10 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent  # This is 'backend' folder
 FRONTEND_DIR = BASE_DIR.parent / 'frontend'  # Goes up to RainBank, then to frontend
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@zsk@1gs3wt-=_v)e$#!e9%gp&)3x0)+!i6o17h-!wqycai*ev'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key-for-development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']  # Allow all hosts for development
 
@@ -44,12 +44,23 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # Add this
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'core.middleware.LanguageMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.TranslationContextMiddleware',
 ]
+
+# Cache settings (if not already present)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'translation-cache',
+        'TIMEOUT': 3600,
+    }
+}
 
 ROOT_URLCONF = 'rainbank.urls'
 
@@ -152,3 +163,7 @@ MPESA_CONSUMER_KEY = ''
 MPESA_CONSUMER_SECRET = ''
 MPESA_SHORTCODE = ''
 MPESA_PASSKEY = ''
+
+# DeepL API Configuration
+DEEPL_API_KEY = config('DEEPL_API_KEY', default='')
+DEEPL_API_URL = config('DEEPL_API_URL', default='https://api-free.deepl.com/v2/translate')

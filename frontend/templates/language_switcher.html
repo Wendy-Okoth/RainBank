@@ -1,0 +1,45 @@
+<!-- templates/language_switcher.html -->
+<div class="relative inline-block">
+    <button onclick="toggleLanguageMenu()" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+        <i class="fas fa-language text-gray-600"></i>
+        <span class="text-sm font-medium">
+            {% if current_language == 'sw' %}
+                Kiswahili
+            {% else %}
+                English
+            {% endif %}
+        </span>
+        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+    </button>
+    
+    <div id="languageMenu" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-xl hidden z-50">
+        <a href="{% url 'core:switch_language' %}?lang=en" class="flex items-center px-4 py-2 hover:bg-gray-50 rounded-t-lg transition {% if current_language == 'en' %}bg-earth/10 text-earth font-semibold{% endif %}">
+            <span>English</span>
+            {% if current_language == 'en' %}
+            <i class="fas fa-check ml-auto text-earth text-sm"></i>
+            {% endif %}
+        </a>
+        <a href="{% url 'core:switch_language' %}?lang=sw" class="flex items-center px-4 py-2 hover:bg-gray-50 rounded-b-lg transition {% if current_language == 'sw' %}bg-earth/10 text-earth font-semibold{% endif %}">
+            <span>Kiswahili</span>
+            {% if current_language == 'sw' %}
+            <i class="fas fa-check ml-auto text-earth text-sm"></i>
+            {% endif %}
+        </a>
+    </div>
+</div>
+
+<script>
+    function toggleLanguageMenu() {
+        const menu = document.getElementById('languageMenu');
+        menu.classList.toggle('hidden');
+    }
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('languageMenu');
+        const button = event.target.closest('[onclick="toggleLanguageMenu()"]');
+        if (!button && menu && !menu.classList.contains('hidden')) {
+            menu.classList.add('hidden');
+        }
+    });
+</script>

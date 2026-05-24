@@ -11,6 +11,8 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('forgot-pin/', views.forgot_pin_page, name='forgot_pin'),
+    # Add to urlpatterns
+    path('switch-language/', views.switch_language, name='switch_language'),
     
     # Dashboard pages (after login)
     path('dashboard/', views.dashboard_overview, name='dashboard_overview'),

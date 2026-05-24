@@ -1,4 +1,5 @@
 <!-- templates/dashboard_navbar.html -->
+{% load translate %}
 <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
     <!-- Left side - Page Title & Mobile Menu Toggle -->
     <div class="flex items-center space-x-4">
@@ -6,12 +7,42 @@
             <i class="fas fa-bars"></i>
         </button>
         <h1 class="text-xl md:text-2xl font-bold text-gray-800">
-            {% block page_title %}Dashboard{% endblock %}
+            {% block page_title %}{% translate "Dashboard" %}{% endblock %}
         </h1>
     </div>
     
     <!-- Right side - Widgets & User Menu -->
     <div class="flex items-center space-x-4">
+        <!-- Language Switcher -->
+        <div class="relative">
+            <button onclick="toggleLanguageMenu()" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+                <i class="fas fa-language text-gray-600"></i>
+                <span class="text-sm font-medium">
+                    {% if current_language == 'sw' %}
+                        {% translate "Kiswahili" %}
+                    {% else %}
+                        {% translate "English" %}
+                    {% endif %}
+                </span>
+                <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+            </button>
+            
+            <div id="languageMenu" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-xl hidden z-50">
+                <a href="{% url 'core:switch_language' %}?lang=en" class="flex items-center px-4 py-2 hover:bg-gray-50 rounded-t-lg transition {% if current_language == 'en' %}bg-earth/10 text-earth font-semibold{% endif %}">
+                    <span>{% translate "English" %}</span>
+                    {% if current_language == 'en' %}
+                    <i class="fas fa-check ml-auto text-earth text-sm"></i>
+                    {% endif %}
+                </a>
+                <a href="{% url 'core:switch_language' %}?lang=sw" class="flex items-center px-4 py-2 hover:bg-gray-50 rounded-b-lg transition {% if current_language == 'sw' %}bg-earth/10 text-earth font-semibold{% endif %}">
+                    <span>{% translate "Kiswahili" %}</span>
+                    {% if current_language == 'sw' %}
+                    <i class="fas fa-check ml-auto text-earth text-sm"></i>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        
         <!-- Weather Widget -->
         <div class="hidden md:flex items-center space-x-2 bg-gray-100 px-3 py-2 rounded-lg">
             <i class="fas fa-sun text-yellow-500"></i>
@@ -43,18 +74,36 @@
             <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl hidden group-hover:block z-50">
                 <a href="{% url 'core:dashboard_profile' %}" class="flex items-center space-x-2 px-4 py-3 hover:bg-gray-50 rounded-t-lg transition">
                     <i class="fas fa-user-circle text-gray-500 w-5"></i>
-                    <span>My Profile</span>
+                    <span>{% translate "My Profile" %}</span>
                 </a>
                 <a href="#" class="flex items-center space-x-2 px-4 py-3 hover:bg-gray-50 transition">
                     <i class="fas fa-question-circle text-gray-500 w-5"></i>
-                    <span>Help & Support</span>
+                    <span>{% translate "Help & Support" %}</span>
                 </a>
                 <hr class="my-1">
                 <a href="{% url 'core:logout' %}" class="flex items-center space-x-2 px-4 py-3 hover:bg-red-50 text-red-600 rounded-b-lg transition">
                     <i class="fas fa-sign-out-alt w-5"></i>
-                    <span>Logout</span>
+                    <span>{% translate "Logout" %}</span>
                 </a>
             </div>
         </div>
     </div>
 </header>
+
+<script>
+    function toggleLanguageMenu() {
+        const menu = document.getElementById('languageMenu');
+        if (menu) {
+            menu.classList.toggle('hidden');
+        }
+    }
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('languageMenu');
+        const button = event.target.closest('[onclick="toggleLanguageMenu()"]');
+        if (!button && menu && !menu.classList.contains('hidden')) {
+            menu.classList.add('hidden');
+        }
+    });
+</script>

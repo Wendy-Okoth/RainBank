@@ -1,9 +1,10 @@
 <!-- templates/dashboard_overview.html -->
 {% extends 'base_dashboard.html' %}
+{% load translate %}
 
-{% block title %}Dashboard - RainBank{% endblock %}
+{% block title %}{% translate "Dashboard" %} - RainBank{% endblock %}
 
-{% block page_title %}Dashboard{% endblock %}
+{% block page_title %}{% translate "Dashboard" %}{% endblock %}
 
 {% block content %}
 <!-- Stats Row -->
@@ -11,9 +12,9 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-b-4 border-earth">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-gray-500 text-sm">Insurance Status</p>
-                <p class="text-2xl font-bold text-earth">Active ✅</p>
-                <p class="text-xs text-gray-400 mt-1">{{ farm.area_acres|default:"0" }} acres covered</p>
+                <p class="text-gray-500 text-sm">{% translate "Insurance Status" %}</p>
+                <p class="text-2xl font-bold text-earth">{% translate "Active" %} ✅</p>
+                <p class="text-xs text-gray-400 mt-1">{{ farm.area_acres|default:"0" }} {% translate "acres covered" %}</p>
             </div>
             <i class="fas fa-shield-alt text-3xl text-earth/30"></i>
         </div>
@@ -22,11 +23,11 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-b-4 border-sun">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-gray-500 text-sm">Drought Risk</p>
+                <p class="text-gray-500 text-sm">{% translate "Drought Risk" %}</p>
                 <p class="text-2xl font-bold text-sun-dark">
-                    {% if consecutive_dry_days >= 7 %}HIGH{% else %}MEDIUM{% endif %}
+                    {% if consecutive_dry_days >= 7 %}{% translate "HIGH" %}{% else %}{% translate "MEDIUM" %}{% endif %}
                 </p>
-                <p class="text-xs text-gray-400 mt-1">{{ consecutive_dry_days }}/10 days dry</p>
+                <p class="text-xs text-gray-400 mt-1">{{ consecutive_dry_days }}/10 {% translate "days dry" %}</p>
             </div>
             <i class="fas fa-tint text-3xl text-sun/30"></i>
         </div>
@@ -35,9 +36,9 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-b-4 border-green-500">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-gray-500 text-sm">Carbon Sequestered</p>
-                <p class="text-2xl font-bold text-green-600">{{ total_carbon|floatformat:1 }} tons</p>
-                <p class="text-xs text-gray-400 mt-1">Value: ${{ carbon_value_usd|floatformat:0 }}</p>
+                <p class="text-gray-500 text-sm">{% translate "Carbon Sequestered" %}</p>
+                <p class="text-2xl font-bold text-green-600">{{ total_carbon|floatformat:1 }} {% translate "tons" %}</p>
+                <p class="text-xs text-gray-400 mt-1">{% translate "Value" %}: ${{ carbon_value_usd|floatformat:0 }}</p>
             </div>
             <i class="fas fa-leaf text-3xl text-green-500/30"></i>
         </div>
@@ -46,9 +47,9 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-b-4 border-blue-500">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-gray-500 text-sm">Total Payouts</p>
+                <p class="text-gray-500 text-sm">{% translate "Total Payouts" %}</p>
                 <p class="text-2xl font-bold text-blue-600">KES {{ total_payouts|floatformat:0 }}</p>
-                <p class="text-xs text-gray-400 mt-1">{{ payout_count }} transactions</p>
+                <p class="text-xs text-gray-400 mt-1">{{ payout_count }} {% translate "transactions" %}</p>
             </div>
             <i class="fas fa-money-bill-wave text-3xl text-blue-500/30"></i>
         </div>
@@ -61,19 +62,19 @@
     <div class="flex items-start">
         <i class="fas fa-exclamation-triangle text-orange-500 text-2xl mr-4"></i>
         <div class="flex-1">
-            <h3 class="font-bold text-orange-800">⚠️ Drought Alert</h3>
+            <h3 class="font-bold text-orange-800">⚠️ {% translate "Drought Alert" %}</h3>
             <p class="text-orange-700 mt-1">
-                Your farm has gone <strong class="text-xl">{{ consecutive_dry_days }} days</strong> without adequate rainfall.
+                {% translate "Your farm has gone" %} <strong class="text-xl">{{ consecutive_dry_days }} {% translate "days" %}</strong> {% translate "without adequate rainfall." %}
                 {% if consecutive_dry_days >= 10 %}
-                <span class="block mt-2 font-bold">✅ Payout triggered! Check your M-Pesa.</span>
+                <span class="block mt-2 font-bold">✅ {% translate "Payout triggered! Check your M-Pesa." %}</span>
                 {% else %}
-                <span class="block mt-2">If this continues for {{ remaining_days }} more day(s), you will receive an automatic payout of <strong>KES {{ pending_payout|floatformat:0 }}</strong>.</span>
+                <span class="block mt-2">{% translate "If this continues for" %} {{ remaining_days }} {% translate "more day(s), you will receive an automatic payout of" %} <strong>KES {{ pending_payout|floatformat:0 }}</strong>.</span>
                 {% endif %}
             </p>
             <div class="mt-4 bg-orange-200 rounded-full h-2 overflow-hidden">
                 <div class="bg-orange-500 h-2 rounded-full" style="width: {% widthratio consecutive_dry_days 10 100 %}%"></div>
             </div>
-            <p class="text-xs text-orange-600 mt-2">{{ consecutive_dry_days }}/10 days without rain</p>
+            <p class="text-xs text-orange-600 mt-2">{{ consecutive_dry_days }}/10 {% translate "days without rain" %}</p>
         </div>
     </div>
 </div>
@@ -82,17 +83,17 @@
 <!-- Charts Row -->
 <div class="grid lg:grid-cols-2 gap-6 mb-8">
     <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-semibold text-gray-800 mb-4">Rainfall Trend (Last 7 Days)</h3>
+        <h3 class="font-semibold text-gray-800 mb-4">{% translate "Rainfall Trend (Last 7 Days)" %}</h3>
         <canvas id="rainfallChart" height="250"></canvas>
-        <p class="text-xs text-gray-500 text-center mt-4">Dashed line shows drought threshold (70% of normal)</p>
+        <p class="text-xs text-gray-500 text-center mt-4">{% translate "Dashed line shows drought threshold (70% of normal)" %}</p>
     </div>
     
     <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-semibold text-gray-800 mb-4">Carbon Credits Breakdown</h3>
+        <h3 class="font-semibold text-gray-800 mb-4">{% translate "Carbon Credits Breakdown" %}</h3>
         <canvas id="carbonChart" height="250"></canvas>
         <div class="mt-4 text-center">
-            <p class="text-sm text-gray-600">Your annual carbon value: <strong>KES {{ carbon_value_kes|floatformat:0 }}</strong></p>
-            <p class="text-xs text-gray-500">You earn 20% bonus annually (KES {% widthratio carbon_value_kes 100 20|floatformat:0 %})</p>
+            <p class="text-sm text-gray-600">{% translate "Your annual carbon value" %}: <strong>KES {{ carbon_value_kes|floatformat:0 }}</strong></p>
+            <p class="text-xs text-gray-500">{% translate "You earn 20% bonus annually" %} (KES {% widthratio carbon_value_kes 100 20|floatformat:0 %})</p>
         </div>
     </div>
 </div>
@@ -100,8 +101,8 @@
 <!-- Recent Payouts -->
 <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
     <div class="flex justify-between items-center mb-4">
-        <h3 class="font-semibold text-gray-800">Recent Payouts</h3>
-        <a href="{% url 'core:dashboard_payout_history' %}" class="text-earth text-sm hover:underline">View all →</a>
+        <h3 class="font-semibold text-gray-800">{% translate "Recent Payouts" %}</h3>
+        <a href="{% url 'core:dashboard_payout_history' %}" class="text-earth text-sm hover:underline">{% translate "View all" %} →</a>
     </div>
     
     {% if recent_payouts %}
@@ -117,15 +118,15 @@
                     <p class="text-xs text-gray-500">{{ payout.requested_at|date:"F j, Y" }}</p>
                 </div>
             </div>
-            <span class="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full">Completed</span>
+            <span class="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full">{% translate "Completed" %}</span>
         </div>
         {% endfor %}
     </div>
     {% else %}
     <div class="text-center py-8 text-gray-500">
         <i class="fas fa-history text-4xl mb-2 opacity-50"></i>
-        <p>No payouts yet</p>
-        <p class="text-sm">Your first drought alert will appear here</p>
+        <p>{% translate "No payouts yet" %}</p>
+        <p class="text-sm">{% translate "Your first drought alert will appear here" %}</p>
     </div>
     {% endif %}
 </div>
@@ -136,8 +137,8 @@
         <div class="flex items-start space-x-3">
             <i class="fas fa-lightbulb text-earth text-xl"></i>
             <div>
-                <p class="font-semibold">💡 Tip: Increase your carbon credits</p>
-                <p class="text-sm text-gray-600">Adding more regenerative practices like cover crops or agroforestry can double your carbon earnings.</p>
+                <p class="font-semibold">💡 {% translate "Tip: Increase your carbon credits" %}</p>
+                <p class="text-sm text-gray-600">{% translate "Adding more regenerative practices like cover crops or agroforestry can double your carbon earnings." %}</p>
             </div>
         </div>
     </div>
@@ -145,8 +146,8 @@
         <div class="flex items-start space-x-3">
             <i class="fas fa-phone-alt text-earth text-xl"></i>
             <div>
-                <p class="font-semibold">📱 Need help?</p>
-                <p class="text-sm text-gray-600">Dial <span class="font-mono">*384#</span> for USSD support or call 0800-RAINBANK</p>
+                <p class="font-semibold">📱 {% translate "Need help?" %}</p>
+                <p class="text-sm text-gray-600">{% translate "Dial" %} <span class="font-mono">*384#</span> {% translate "for USSD support or call" %} 0800-RAINBANK</p>
             </div>
         </div>
     </div>
@@ -162,14 +163,14 @@
         data: {
             labels: {{ rainfall_labels|safe }},
             datasets: [{
-                label: 'Actual Rainfall (mm)',
+                label: '{% translate "Actual Rainfall (mm)" %}',
                 data: {{ rainfall_data|safe }},
                 borderColor: '#48cae4',
                 backgroundColor: 'rgba(72, 202, 228, 0.1)',
                 tension: 0.4,
                 fill: true
             }, {
-                label: 'Drought Threshold',
+                label: '{% translate "Drought Threshold" %}',
                 data: Array(7).fill({{ threshold|default:2.5 }}),
                 borderColor: '#e76f51',
                 borderDash: [5, 5],
@@ -195,7 +196,7 @@
     new Chart(carbonCtx, {
         type: 'doughnut',
         data: {
-            labels: ['Carbon Sequestered', 'Annual Target Remaining'],
+            labels: ['{% translate "Carbon Sequestered" %}', '{% translate "Annual Target Remaining" %}'],
             datasets: [{
                 data: [carbonSequestrated, carbonRemaining > 0 ? carbonRemaining : 0],
                 backgroundColor: ['#2d6a4f', '#e5e7eb'],

@@ -1,9 +1,10 @@
 <!-- templates/dashboard_carbon_credits.html -->
 {% extends 'base_dashboard.html' %}
+{% load translate %}
 
-{% block title %}Carbon Credits - RainBank{% endblock %}
+{% block title %}{% translate "Carbon Credits" %} - RainBank{% endblock %}
 
-{% block page_title %}Carbon Credits{% endblock %}
+{% block page_title %}{% translate "Carbon Credits" %}{% endblock %}
 
 {% block content %}
 <!-- Stats Cards -->
@@ -11,38 +12,38 @@
     <div class="bg-white rounded-xl shadow-sm p-6 text-center border-b-4 border-earth">
         <i class="fas fa-cloud text-3xl text-earth mb-2"></i>
         <div class="text-3xl font-bold text-earth">{{ total_carbon|floatformat:1 }}</div>
-        <div class="text-gray-600">Tons CO₂ Sequestered</div>
+        <div class="text-gray-600">{% translate "Tons CO₂ Sequestered" %}</div>
     </div>
     <div class="bg-white rounded-xl shadow-sm p-6 text-center border-b-4 border-green-500">
         <i class="fas fa-dollar-sign text-3xl text-green-500 mb-2"></i>
         <div class="text-3xl font-bold text-green-600">${{ carbon_value_usd|floatformat:0 }}</div>
-        <div class="text-gray-600">Carbon Value (USD)</div>
+        <div class="text-gray-600">{% translate "Carbon Value (USD)" %}</div>
     </div>
     <div class="bg-white rounded-xl shadow-sm p-6 text-center border-b-4 border-blue-500">
         <i class="fas fa-money-bill-wave text-3xl text-blue-500 mb-2"></i>
         <div class="text-3xl font-bold text-blue-600">KES {{ carbon_value_kes|floatformat:0 }}</div>
-        <div class="text-gray-600">Carbon Value (KES)</div>
+        <div class="text-gray-600">{% translate "Carbon Value (KES)" %}</div>
     </div>
 </div>
 
 <!-- How Credits Work -->
 <div class="bg-gradient-to-r from-earth to-earth-light text-white rounded-xl p-6 mb-8">
-    <h3 class="font-bold text-xl mb-3">🌍 How Your Carbon Credits Work</h3>
+    <h3 class="font-bold text-xl mb-3">🌍 {% translate "How Your Carbon Credits Work" %}</h3>
     <div class="grid md:grid-cols-3 gap-4 text-center">
         <div>
             <div class="text-2xl font-bold">1</div>
-            <p class="font-semibold">Your soil captures CO₂</p>
-            <p class="text-sm opacity-90">Regenerative practices sequester carbon</p>
+            <p class="font-semibold">{% translate "Your soil captures CO₂" %}</p>
+            <p class="text-sm opacity-90">{% translate "Regenerative practices sequester carbon" %}</p>
         </div>
         <div>
             <div class="text-2xl font-bold">2</div>
-            <p class="font-semibold">Companies buy credits</p>
-            <p class="text-sm opacity-90">Airlines, tech companies offset emissions</p>
+            <p class="font-semibold">{% translate "Companies buy credits" %}</p>
+            <p class="text-sm opacity-90">{% translate "Airlines, tech companies offset emissions" %}</p>
         </div>
         <div>
             <div class="text-2xl font-bold">3</div>
-            <p class="font-semibold">You get free insurance + bonus</p>
-            <p class="text-sm opacity-90">70% to payouts, 20% to you, 10% operations</p>
+            <p class="font-semibold">{% translate "You get free insurance + bonus" %}</p>
+            <p class="text-sm opacity-90">{% translate "70% to payouts, 20% to you, 10% operations" %}</p>
         </div>
     </div>
 </div>
@@ -50,27 +51,27 @@
 <!-- Credit Breakdown -->
 <div class="grid lg:grid-cols-2 gap-6 mb-8">
     <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-semibold text-gray-800 mb-4">How Your Credits Are Calculated</h3>
+        <h3 class="font-semibold text-gray-800 mb-4">{% translate "How Your Credits Are Calculated" %}</h3>
         <div class="space-y-3">
             <div class="flex justify-between py-2 border-b">
-                <span class="text-gray-600">Base sequestration (conventional farming)</span>
-                <span class="font-medium">{{ base_credits|default:1.0 }} tons</span>
+                <span class="text-gray-600">{% translate "Base sequestration (conventional farming)" %}</span>
+                <span class="font-medium">{{ base_credits|default:1.0 }} {% translate "tons" %}</span>
             </div>
             {% for practice, tons in practice_credits.items %}
             <div class="flex justify-between py-2 border-b">
                 <span class="text-gray-600">+ {{ practice|title }}</span>
-                <span class="font-medium text-green-600">+ {{ tons }} tons</span>
+                <span class="font-medium text-green-600">+ {{ tons }} {% translate "tons" %}</span>
             </div>
             {% endfor %}
             <div class="flex justify-between py-2 border-t-2 font-bold">
-                <span>Total Annual Credits</span>
-                <span class="text-earth">{{ total_carbon|floatformat:1 }} tons</span>
+                <span>{% translate "Total Annual Credits" %}</span>
+                <span class="text-earth">{{ total_carbon|floatformat:1 }} {% translate "tons" %}</span>
             </div>
         </div>
     </div>
     
     <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-semibold text-gray-800 mb-4">Revenue Distribution (70-20-10 Split)</h3>
+        <h3 class="font-semibold text-gray-800 mb-4">{% translate "Revenue Distribution (70-20-10 Split)" %}</h3>
         <div class="mb-4">
             <div class="flex h-8 rounded-lg overflow-hidden mb-2">
                 <div class="bg-blue-500 w-7/10 flex items-center justify-center text-white text-xs">70%</div>
@@ -78,23 +79,23 @@
                 <div class="bg-gray-400 w-1/10 flex items-center justify-center text-white text-xs">10%</div>
             </div>
             <div class="flex justify-between text-xs text-gray-600">
-                <span>Insurance Pool</span>
-                <span>Your Bonus</span>
-                <span>Operations</span>
+                <span>{% translate "Insurance Pool" %}</span>
+                <span>{% translate "Your Bonus" %}</span>
+                <span>{% translate "Operations" %}</span>
             </div>
         </div>
         <div class="grid grid-cols-3 gap-3 text-center">
             <div class="bg-blue-50 rounded-lg p-3">
-                <p class="text-xs text-gray-600">Insurance Pool</p>
+                <p class="text-xs text-gray-600">{% translate "Insurance Pool" %}</p>
                 <p class="font-bold text-blue-600">${{ insurance_pool|floatformat:0 }}</p>
             </div>
             <div class="bg-green-50 rounded-lg p-3">
-                <p class="text-xs text-gray-600">Your Bonus</p>
+                <p class="text-xs text-gray-600">{% translate "Your Bonus" %}</p>
                 <p class="font-bold text-green-600">${{ farmer_bonus|floatformat:0 }}</p>
                 <p class="text-xs text-gray-500">KES {% widthratio carbon_value_kes 100 20|floatformat:0 %}</p>
             </div>
             <div class="bg-gray-50 rounded-lg p-3">
-                <p class="text-xs text-gray-600">Operations</p>
+                <p class="text-xs text-gray-600">{% translate "Operations" %}</p>
                 <p class="font-bold text-gray-600">${{ operations|floatformat:0 }}</p>
             </div>
         </div>
@@ -103,7 +104,7 @@
 
 <!-- Carbon Marketplace -->
 <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-    <h3 class="font-semibold text-gray-800 mb-4">Companies Buying Your Carbon Credits</h3>
+    <h3 class="font-semibold text-gray-800 mb-4">{% translate "Companies Buying Your Carbon Credits" %}</h3>
     <div class="flex flex-wrap justify-center gap-6">
         <div class="text-center">
             <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
@@ -130,21 +131,21 @@
             <p class="text-sm font-medium">Total Energies</p>
         </div>
     </div>
-    <p class="text-center text-xs text-gray-500 mt-4">Your credits are verified by Verra (VM0042 methodology)</p>
+    <p class="text-center text-xs text-gray-500 mt-4">{% translate "Your credits are verified by Verra (VM0042 methodology)" %}</p>
 </div>
 
 <!-- Annual Bonus History -->
 <div class="bg-white rounded-xl shadow-sm p-6">
-    <h3 class="font-semibold text-gray-800 mb-4">Annual Bonus History</h3>
+    <h3 class="font-semibold text-gray-800 mb-4">{% translate "Annual Bonus History" %}</h3>
     {% if bonus_history %}
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-4 py-2 text-left">Year</th>
-                    <th class="px-4 py-2 text-right">Credits (tons)</th>
-                    <th class="px-4 py-2 text-right">Bonus (KES)</th>
-                    <th class="px-4 py-2 text-center">Status</th>
+                    <th class="px-4 py-2 text-left">{% translate "Year" %}</th>
+                    <th class="px-4 py-2 text-right">{% translate "Credits (tons)" %}</th>
+                    <th class="px-4 py-2 text-right">{% translate "Bonus (KES)" %}</th>
+                    <th class="px-4 py-2 text-center">{% translate "Status" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -155,9 +156,9 @@
                     <td class="px-4 py-2 text-right">{{ bonus.amount|floatformat:0 }}</td>
                     <td class="px-4 py-2 text-center">
                         {% if bonus.paid %}
-                        <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Paid</span>
+                        <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">{% translate "Paid" %}</span>
                         {% else %}
-                        <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">Pending</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">{% translate "Pending" %}</span>
                         {% endif %}
                     </td>
                 </tr>
@@ -168,8 +169,8 @@
     {% else %}
     <div class="text-center py-8 text-gray-500">
         <i class="fas fa-chart-line text-4xl mb-2 opacity-50"></i>
-        <p>No bonus history yet</p>
-        <p class="text-sm">Your first annual bonus will be calculated after 12 months</p>
+        <p>{% translate "No bonus history yet" %}</p>
+        <p class="text-sm">{% translate "Your first annual bonus will be calculated after 12 months" %}</p>
     </div>
     {% endif %}
 </div>

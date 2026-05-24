@@ -98,14 +98,14 @@
                 </div>
             </div>
             
-            <!-- Navigation Links -->
+            <!-- Navigation Links - FIXED with core: prefix -->
             <nav class="flex-1 p-4 space-y-1">
-                <a href="{% url 'dashboard_overview' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'overview' %}active{% endif %}">
+                <a href="{% url 'core:dashboard_overview' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'overview' %}active{% endif %}">
                     <i class="fas fa-tachometer-alt w-5"></i>
                     <span>Dashboard</span>
                 </a>
                 
-                <a href="{% url 'dashboard_drought_status' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'drought' %}active{% endif %}">
+                <a href="{% url 'core:dashboard_drought_status' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'drought' %}active{% endif %}">
                     <i class="fas fa-tint w-5"></i>
                     <span>Drought Status</span>
                     {% if drought_alert %}
@@ -113,30 +113,30 @@
                     {% endif %}
                 </a>
                 
-                <a href="{% url 'dashboard_carbon_credits' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'carbon' %}active{% endif %}">
+                <a href="{% url 'core:dashboard_carbon_credits' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'carbon' %}active{% endif %}">
                     <i class="fas fa-leaf w-5"></i>
                     <span>Carbon Credits</span>
                 </a>
                 
-                <a href="{% url 'dashboard_payout_history' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'payouts' %}active{% endif %}">
+                <a href="{% url 'core:dashboard_payout_history' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'payouts' %}active{% endif %}">
                     <i class="fas fa-history w-5"></i>
                     <span>Payout History</span>
                 </a>
                 
-                <a href="{% url 'dashboard_farm_map' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'map' %}active{% endif %}">
+                <a href="{% url 'core:dashboard_farm_map' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'map' %}active{% endif %}">
                     <i class="fas fa-map-marker-alt w-5"></i>
                     <span>Farm Map</span>
                 </a>
                 
-                <a href="{% url 'dashboard_profile' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'profile' %}active{% endif %}">
+                <a href="{% url 'core:dashboard_profile' %}" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 {% if active_tab == 'profile' %}active{% endif %}">
                     <i class="fas fa-user-circle w-5"></i>
                     <span>Profile</span>
                 </a>
             </nav>
             
-            <!-- Logout Button -->
+            <!-- Logout Button - FIXED with core: prefix -->
             <div class="p-4 border-t">
-                <a href="{% url 'logout' %}" class="flex items-center space-x-3 text-red-600 hover:text-red-700 px-4 py-3 rounded-lg hover:bg-red-50 transition">
+                <a href="{% url 'core:logout' %}" class="flex items-center space-x-3 text-red-600 hover:text-red-700 px-4 py-3 rounded-lg hover:bg-red-50 transition">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
